@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visita a centros</title>
+
+<style>
+:root {
+  --green-light: #a8e6cf;
+  --green-mid: #56c596;
+  --green-dark: #379683;
+  --green-bg: #ecfdf5;
+  --active: #dffaf0;
+  --header-height: 70px; /* ajusta fino si quieres */
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--green-bg);
+}
+
+/* HEADER */
+header {
+  background: var(--green-mid);
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+
+  height: var(--header-height); /* 🔥 consistente */
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-btn {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%); /* 🔥 centrado vertical real */
+  font-size: 22px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: var(--header-height); /* 🔥 clave */
+  left: -260px;
+  width: 260px;
+  height: calc(100% - var(--header-height)); /* 🔥 clave */
+  background: var(--green-light);
+  overflow-y: auto;
+  padding-top: 0;
+  transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1000;
+}
+.encabezado{
+  color: black;
+  padding: 0 15px;
+  display: grid;
+  align-items: center; /* Centra vertical y horizontalmente */
+  height: 10vh;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+/* ACCORDION */
+.accordion-header {
+  padding: 15px;
+  background: var(--green-mid);
+  color: white;
+  cursor: pointer;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  background: white;
+  padding: 0 15px;
+  transition: 0.3s ease;
+}
+
+.accordion-content.open {
+  padding: 10px 15px;
+}
+
+/* MAIN CONTENT AREAS */
+main {
+  padding: 20px;
+  padding-bottom: 90px;
+}
+
+.section {
+  display: none;
+  animation: fade 0.25s ease;
+}
+
+.section.active {
+  display: block;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* FOOTER */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--green-dark);
+  display: flex;
+  padding: 6px;
+  gap: 6px; /* separación entre tabs */
+}
+
+/* TAB BUTTONS */
+.tab {
+  flex: 1;
+  text-align: center;
+  color: white;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: 0.2s ease;
+  border-radius: 12px; /* importante */
+}
+
+.tab.active {
+  background: var(--green-mid);
+  color: #003b2f;
+  border-radius: 16px; /* más redondeado para destacar */
+}
+
+.tab svg {
+  width: 22px;
+  height: 22px;
+  fill: white;
+  display: block;
+  margin: 0 auto 2px;
+}
+
+.tab.active svg {
+  fill: #003b2f;
+}
+
+
+.switch {
+  position: relative;
+  width: 50px;
+  height: 25px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 25px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 19px;
+  width: 19px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background-color: #27ae60;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+.input-box,
+.textarea-box {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #b7e4d3;
+  border-radius: 10px;
+  font-size: 14px;
+  background: white;
+}
+
+.textarea-box {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.btn-send {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: gray;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-send:active {
+  transform: scale(0.98);
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.title {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* ACORDEON AFILIADOS */
+.person-accordion {
+  margin-top: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.person-header {
+  background: var(--green-mid);
+  color: white;
+  padding: 14px;
+  cursor: pointer;
+  
+  display: flex;                /* 🔥 layout horizontal */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.person-name {
+  flex: 1;
+}
+
+.phone-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+  opacity: 0.9;
+  transition: 0.2s ease;
+}
+
+.phone-icon:active svg {
+  transform: scale(0.9);
+  opacity: 1;
+}
+
+.person-content {
+  max-height: 0;
+  overflow: hidden;
+  background: white;
+  transition: 0.3s ease;
+  padding: 0 15px;
+}
+
+.person-content.open {
+  padding: 15px;
+}
+
+.visited-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.hidden-field {
+  display: none;
+}
+.person-header.active {
+  background: #009C70; 
+}
+.badge {
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+#pendingBadge.badge{
+  top:25px;
+  position: absolute;
+  right: 15px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  min-height: 18px;
+}
+.user-name {
+  font-size: 13px;
+  margin-top: -20px;
+  opacity: 0.9;
+  color: black;
+}
+.accordion-header {
+  padding: 15px;
+  background: var(--green-mid);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+.spinner {
+  width: 14px;
+  height: 14px;
+  animation: spin 1s linear infinite;
+}
+
+.spinner circle {
+  stroke: white;
+  stroke-linecap: round;
+  stroke-dasharray: 90;
+  stroke-dashoffset: 60;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <h2>Visitas a Centros</h2>
+  <div class="user-name">Usuario: Juan Pérez</div>
+  <div id="pendingBadge" class="badge">
+    <svg class="spinner" viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+    </svg>
+  </div>
+</header>
+
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+<div id="sidebar" class="sidebar">
+  <div id="accordion"></div>
+</div>
+
+<main>
+
+  <!-- VISITA -->
+  <div id="home" class="section active">
+    <h3>Datos de la visita</h3>
+    <p><strong>Fecha:</strong> dd-mm-aaaa <strong>Tipo de Visita:</strong> CALIDAD</p>
+	<p><strong>Centro:</strong> 18700293 IES Francisco Ayala (Granada)</p>
+	<p><strong>Mesa:</strong> Nº 35 IES Francisco Ayala (Granada)</p>
+	<p><strong>Compañero de visita: </strong> EDU</p>
+	<p><strong>Hora del recreo:</strong><br />
+    <input type="text" class="input-box" placeholder="Escribe un dato"></p>
+	<p><strong>Director:</strong><br />
+    <input type="text" class="input-box" placeholder="Escribe un dato"></p>
+	<p><strong>Jefe de Estudios:</strong><br />
+    <input type="text" class="input-box" placeholder="Escribe un dato"></p>
+    <button class="btn-send" onclick="mostrarToast('Guardado ✔');">Guardar</button>
+  </div>
+
+  <!-- AFILIADOS -->
+  <div id="search" class="section">
+    <h3>Lista de Afiliados</h3>
+    <div id="affiliateList"></div>
+  </div>
+
+  <!-- FAVORITOS -->
+  <div id="fav" class="section">
+    <h3>Favoritos</h3>
+
+    <div class="card">
+      <div class="title">Juan Carlos Jiménez</div>
+      <div class="subtitle">Equipo directivo</div>
+    </div>
+
+    <div class="card">
+      <div class="title">María López García</div>
+      <div class="subtitle">Enlace sindical</div>
+    </div>
+
+    <div class="card">
+      <div class="title">Antonio Ruiz Pérez</div>
+      <div class="subtitle">Candidato</div>
+    </div>
+  </div>
+
+  <!-- INCIDENCIAS -->
+  <div id="profile" class="section">
+    <h3>Incidencias</h3>
+	<p>Escribe aquí cualquier tipo de incidencia, sugerencia, etc... que se haya detectado a lo largo de la visita. A continuación, pulsa el botón guardar.</p>
+    <textarea class="textarea-box" placeholder="Escribe observaciones..."></textarea>
+    <button class="btn-send" onclick="mostrarToast('Guardado ✔');">Guardar</button>
+  </div>
+
+</main>
+
+<footer>
+  <div class="tab active" onclick="switchTab('home', this)">
+    <svg viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3z"/></svg>
+    Visita
+  </div>
+
+  <div class="tab" onclick="switchTab('search', this)" id="tab-afiliados">
+    <div style="position: relative;">
+      <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-5 0-9 3-9 6v2h18v-2c0-3-4-6-9-6z"/></svg>
+      <span class="badge" id="badge-afiliados">0</span>
+    </div>
+    Afiliados
+  </div>
+
+  <div class="tab" onclick="switchTab('fav', this)">
+    <div style="position: relative;">
+      <svg viewBox="0 0 24 24"><path d="M12 21s-6-4.35-9-8.28C-1 8.5 3 3 7.5 5.5 9.24 6.44 12 9 12 9s2.76-2.56 4.5-3.5C21 3 25 8.5 21 12.72 18 16.65 12 21 12 21z"/></svg>
+      <span class="badge" id="badge-afiliados">3</span>
+    </div>
+    Favoritos
+  </div>
+
+  <div class="tab" onclick="switchTab('profile', this)">
+    <svg viewBox="0 0 24 24"><path d="M16 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L16 2Z"/></svg>
+    Incidencias
+  </div>
+</footer>
+
+<script>
+
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+/* ACCORDEÓN */
+const accordion = document.getElementById("accordion");
+let meses = ["HOY", "Septiembre", "Octubre", "Noviembre", "Diciembre", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
+
+for (let i = 0; i < meses.length; i++) {
+  const item = document.createElement("div");
+
+  const header = document.createElement("div");
+  header.className = "accordion-header";
+  header.innerHTML = `
+    <span>${meses[i]}</span>
+    <span class="arrow">▼</span>
+  `;
+
+  const content = document.createElement("div");
+  content.className = "accordion-content";
+  content.innerHTML = "<p><a href=\"#\">dd-Mmm-aaaa</a></p>";
+  content.innerHTML += (i>0?"<p><a href=\"#\">dd-Mmm-aaaa</a></p>":"");
+
+	header.onclick = () => {
+	  const isOpen = content.classList.contains("open");
+
+	  // cerrar todos
+	  document.querySelectorAll(".accordion-content").forEach(c => {
+		c.style.maxHeight = null;
+		c.classList.remove("open");
+	  });
+
+	  document.querySelectorAll(".arrow").forEach(a => {
+		a.classList.remove("open");
+	  });
+
+	  if (!isOpen) {
+		content.classList.add("open");
+		content.style.maxHeight = content.scrollHeight + "px";
+		header.querySelector(".arrow").classList.add("open");
+	  }
+	};
+
+  item.appendChild(header);
+  item.appendChild(content);
+  accordion.appendChild(item);
+  
+  if(i==0){
+	content.classList.add("open");
+	content.style.maxHeight = content.scrollHeight + "px";
+	header.querySelector(".arrow").classList.add("open");
+  }
+}
+
+function toggleMenu() {
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("active");
+}
+
+function closeMenu() {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("active");
+
+  /*document.querySelectorAll(".accordion-content").forEach(c => {
+    c.style.maxHeight = null;
+    c.classList.remove("open");
+  });*/
+}
+
+/* TAB SWITCH */
+function switchTab(id, el) {
+  document.querySelectorAll(".section").forEach(s => {
+    s.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".tab").forEach(t => {
+    t.classList.remove("active");
+  });
+
+  el.classList.add("active");
+}
+
+/* AFILIADOS */
+const affiliateList = document.getElementById("affiliateList");
+
+const people = [
+  "Juan Carlos Jiménez",
+  "María López García",
+  "Antonio Ruiz Pérez",
+  "Carmen Sánchez López"
+];
+
+const telefonos = [
+  "666666661",
+  "666666662",
+  "666666663",
+  "666666664"
+];
+
+document.getElementById("badge-afiliados").innerText = people.length;
+
+i=0;
+people.forEach(person => {
+  const item = document.createElement("div");
+  item.className = "person-accordion";
+
+  const header = document.createElement("div");
+  header.className = "person-header";
+  header.innerHTML = `
+    <span class="person-name" >${person}</span>
+    <a href="tel:${telefonos[i++]}" class="phone-icon" onclick="event.stopPropagation()">
+      <svg viewBox="0 0 24 24">
+        <path d="M6.6 10.8a15.05 15.05 0 006.6 6.6l2.2-2.2a1 1 0 011-.24c1.1.37 2.3.57 3.6.57a1 1 0 011 1V21a1 1 0 01-1 1C10.3 22 2 13.7 2 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.3.2 2.5.57 3.6a1 1 0 01-.25 1L6.6 10.8z"/>
+      </svg>
+    </a>
+  `;
+
+  const content = document.createElement("div");
+  content.className = "person-content";
+
+	content.innerHTML = `
+	  <p><strong>Especialidad:</strong> Informática P.E.S.</p>
+	  <p><strong>Sit. Administrativa:</strong> (F) Comisiones de Servicio</p>
+	  <p><strong>Centro Definitivo:</strong> I.E.S. Emilio Muñoz (Cogollos Vega)</p>
+	  <p><strong>18:</strong> NO <strong>22:</strong> SI</p>
+	  <div class="visited-row">
+		<span>Material entregado</span>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider"></span>
+		</label>
+	  </div>
+
+	  <div class="visited-row">
+		<span>Visitado</span>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider"></span>
+		</label>
+	  </div>
+
+	  <div class="visited-row">
+		<span>Quiere ser candidato</span>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider"></span>
+		</label>
+	  </div>
+
+	  <div class="visited-row">
+		<span>No se encuentra en el centro</span>
+		<label class="switch">
+		  <input type="checkbox" class="toggle-presence">
+		  <span class="slider"></span>
+		</label>
+	  </div>
+
+	  <input type="text" class="input-box hidden-field" placeholder="Si sabes dónde está, escríbelo aquí">
+
+	  <button class="btn-send" onclick="mostrarToast('Guardado ✔');">Guardar</button>
+	`;
+
+	const checkbox = content.querySelector(".toggle-presence");
+	const inputField = content.querySelector(".hidden-field");
+
+	checkbox.addEventListener("change", () => {
+	  if (checkbox.checked) {
+		inputField.style.display = "block";
+	  } else {
+		inputField.style.display = "none";
+		inputField.value = "";
+	  }
+
+	  // recalcular altura del acordeón
+	  content.style.maxHeight = content.scrollHeight + "px";
+	});
+
+  header.onclick = () => {
+    const isOpen = content.classList.contains("open");
+
+	document.querySelectorAll(".person-content").forEach(c => {
+	  c.style.maxHeight = null;
+	  c.classList.remove("open");
+	});
+
+	document.querySelectorAll(".person-header").forEach(h => {
+	  h.classList.remove("active");
+	});
+
+    if (!isOpen) {
+	  header.classList.add("active");
+      content.classList.add("open");
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+  };
+
+  item.appendChild(header);
+  item.appendChild(content);
+  affiliateList.appendChild(item);
+});
+
+/*TOAST*/
+function mostrarToast(mensaje) {
+//if(pendientes==0){
+	const toast = document.getElementById("toast");
+	toast.textContent = mensaje;
+	toast.style.display = "block";
+
+	setTimeout(() => {
+	  toast.style.display = "none";
+	}, 2000)
+//}
+}
+</script>
+<div id="toast" style="
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2c3e50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: none;
+  z-index: 2000;
+"></div>
+</body>
+</html>
