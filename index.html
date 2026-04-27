@@ -12,7 +12,7 @@
   --green-dark: #379683;
   --green-bg: #ecfdf5;
   --active: #dffaf0;
-  --header-height: 70px; /* ajusta fino si quieres */
+  --header-height: 70px;
 }
 
 body {
@@ -31,7 +31,7 @@ header {
   top: 0;
   z-index: 1100;
 
-  height: var(--header-height); /* 🔥 consistente */
+  height: var(--header-height);
   box-sizing: border-box;
 
   display: flex;
@@ -44,7 +44,7 @@ header {
   position: absolute;
   left: 15px;
   top: 50%;
-  transform: translateY(-50%); /* 🔥 centrado vertical real */
+  transform: translateY(-50%);
   font-size: 22px;
   background: none;
   border: none;
@@ -70,10 +70,10 @@ header {
 /* SIDEBAR */
 .sidebar {
   position: fixed;
-  top: var(--header-height); /* 🔥 clave */
+  top: var(--header-height);
   left: -260px;
   width: 260px;
-  height: calc(100% - var(--header-height)); /* 🔥 clave */
+  height: calc(100% - var(--header-height));
   background: var(--green-light);
   overflow-y: auto;
   padding-top: 0;
@@ -84,7 +84,7 @@ header {
   color: black;
   padding: 0 15px;
   display: grid;
-  align-items: center; /* Centra vertical y horizontalmente */
+  align-items: center;
   height: 10vh;
 }
 
@@ -152,13 +152,13 @@ footer {
   cursor: pointer;
   padding: 8px 0;
   transition: 0.2s ease;
-  border-radius: 12px; /* importante */
+  border-radius: 12px;
 }
 
 .tab.active {
   background: var(--green-mid);
   color: #003b2f;
-  border-radius: 16px; /* más redondeado para destacar */
+  border-radius: 16px;
 }
 
 .tab svg {
@@ -282,7 +282,7 @@ input:checked + .slider:before {
   padding: 14px;
   cursor: pointer;
   
-  display: flex;                /* 🔥 layout horizontal */
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
@@ -571,6 +571,7 @@ function closeMenu() {
   sidebar.classList.remove("open");
   overlay.classList.remove("active");
 
+  /*CERRAR TODOS LOS ACORDEONES*/
   /*document.querySelectorAll(".accordion-content").forEach(c => {
     c.style.maxHeight = null;
     c.classList.remove("open");
@@ -610,6 +611,7 @@ const telefonos = [
 ];
 
 document.getElementById("badge-afiliados").innerText = people.length;
+document.getElementById("pendingBadge").style.display = "none";
 
 i=0;
 people.forEach(person => {
