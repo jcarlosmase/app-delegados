@@ -528,8 +528,10 @@ for (let i = 0; i < meses.length; i++) {
 
   const content = document.createElement("div");
   content.className = "accordion-content";
-  content.innerHTML = "<p><a href=\"#\">01/01/2026<br />IES Francisco Ayala (Granada)</a></p>";
-  content.innerHTML += (i>0?"<p><a href=\"#\">01/01/2026<br />IES Francisco Ayala (Granada)</a></p>":"");
+  content.innerHTML = "<button class='btn-send' onclick=\"mostrarToast('Cargar fecha');\">01/01/2026<br />IES Francisco Ayala (Granada)</button>";
+  content.innerHTML += (i>0?"<button class='btn-send' onclick=\"mostrarToast('Cargar fecha');\">02/01/2026<br />IES Francisco Ayala (Granada)</button>":"");
+  //content.innerHTML = "<p><a href=\"#\">01/01/2026<br />IES Francisco Ayala (Granada)</a></p>";
+  //content.innerHTML += (i>0?"<p><a href=\"#\">01/01/2026<br />IES Francisco Ayala (Granada)</a></p>":"");
 
 	header.onclick = () => {
 	  const isOpen = content.classList.contains("open");
