@@ -528,8 +528,8 @@ for (let i = 0; i < meses.length; i++) {
 
   const content = document.createElement("div");
   content.className = "accordion-content";
-  content.innerHTML = "<p><a href=\"#\">dd-Mmm-aaaa</a></p>";
-  content.innerHTML += (i>0?"<p><a href=\"#\">dd-Mmm-aaaa</a></p>":"");
+  content.innerHTML = "<p><a href=\"#\">01/01/2026<br />IES Francisco Ayala (Granada)</a></p>";
+  content.innerHTML += (i>0?"<p><a href=\"#\">01/01/2026<br />IES Francisco Ayala (Granada)</a></p>":"");
 
 	header.onclick = () => {
 	  const isOpen = content.classList.contains("open");
@@ -637,6 +637,7 @@ people.forEach(person => {
 	  <p><strong>Sit. Administrativa:</strong> (F) Comisiones de Servicio</p>
 	  <p><strong>Centro Definitivo:</strong> I.E.S. Emilio Muñoz (Cogollos Vega)</p>
 	  <p><strong>18:</strong> NO <strong>22:</strong> SI</p>
+	  
 	  <div class="visited-row">
 		<span>Material entregado</span>
 		<label class="switch">
