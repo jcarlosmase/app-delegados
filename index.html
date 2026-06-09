@@ -403,6 +403,16 @@ input:checked + .slider:before {
     transform: rotate(360deg);
   }
 }
+.fav-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.fav-header .phone-icon{
+  flex-shrink:0;
+  margin-left:12px;
+}
 </style>
 </head>
 
@@ -452,26 +462,47 @@ input:checked + .slider:before {
   <!-- FAVORITOS -->
   <div id="fav" class="section">
     <h3>Favoritos</h3>
+	<div class="card">
+	  <div class="fav-header">
+		<div>
+		  <div class="title">Juan Carlos Jiménez</div>
+		  <div class="subtitle">Equipo directivo</div>
+		  <div class="subtitle">Enlace sindical</div>
+		</div>
+	    <a href="tel:666666666" class="phone-icon">
+		  <svg viewBox="0 0 24 24">
+		    <path d="M6.6 10.8a15.05 15.05 0 006.6 6.6l2.2-2.2a1 1 0 011-.24c1.1.37 2.3.57 3.6.57a1 1 0 011 1V21a1 1 0 01-1 1C10.3 22 2 13.7 2 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.3.2 2.5.57 3.6a1 1 0 01-.25 1L6.6 10.8z" stroke="black" />
+		  </svg>
+	    </a>
+	  </div>
+	</div>
 
     <div class="card">
-      <div class="title">Juan Carlos Jiménez</div>
-      <div class="subtitle">Equipo directivo</div>
-	  <div class="subtitle">Enlace sindical</div>
-      <a href="tel:666666666" class="phone-icon">
-        <svg viewBox="0 0 24 24">
-          <path d="M6.6 10.8a15.05 15.05 0 006.6 6.6l2.2-2.2a1 1 0 011-.24c1.1.37 2.3.57 3.6.57a1 1 0 011 1V21a1 1 0 01-1 1C10.3 22 2 13.7 2 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.3.2 2.5.57 3.6a1 1 0 01-.25 1L6.6 10.8z" stroke="black" />
-        </svg>
-      </a>
+	  <div class="fav-header">
+	    <div>
+		  <div class="title">María López García</div>
+		  <div class="subtitle">Enlace sindical</div>
+		</div>
+	    <a href="tel:666666666" class="phone-icon">
+		  <svg viewBox="0 0 24 24">
+		    <path d="M6.6 10.8a15.05 15.05 0 006.6 6.6l2.2-2.2a1 1 0 011-.24c1.1.37 2.3.57 3.6.57a1 1 0 011 1V21a1 1 0 01-1 1C10.3 22 2 13.7 2 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.3.2 2.5.57 3.6a1 1 0 01-.25 1L6.6 10.8z" stroke="black" />
+		  </svg>
+	    </a>
+	  </div>
     </div>
 
     <div class="card">
-      <div class="title">María López García</div>
-      <div class="subtitle">Enlace sindical</div>
-    </div>
-
-    <div class="card">
-      <div class="title">Antonio Ruiz Pérez</div>
-      <div class="subtitle">Candidato</div>
+	  <div class="fav-header">
+	    <div>
+		  <div class="title">Antonio Ruiz Pérez</div>
+		  <div class="subtitle">Candidato</div>
+		</div>
+	    <a href="tel:666666666" class="phone-icon">
+		  <svg viewBox="0 0 24 24">
+		    <path d="M6.6 10.8a15.05 15.05 0 006.6 6.6l2.2-2.2a1 1 0 011-.24c1.1.37 2.3.57 3.6.57a1 1 0 011 1V21a1 1 0 01-1 1C10.3 22 2 13.7 2 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.3.2 2.5.57 3.6a1 1 0 01-.25 1L6.6 10.8z" stroke="black" />
+		  </svg>
+	    </a>
+	  </div>
     </div>
   </div>
 
@@ -647,7 +678,7 @@ people.forEach(person => {
 	  <p><strong>18:</strong> NO <strong>22:</strong> SI</p>
 	  
 	  <div class="visited-row">
-		<span>Material entregado</span>
+		<span><strong>Material entregado</strong></span>
 		<label class="switch">
 		  <input type="checkbox">
 		  <span class="slider"></span>
@@ -655,7 +686,7 @@ people.forEach(person => {
 	  </div>
 
 	  <div class="visited-row">
-		<span>Visitado</span>
+		<span><strong>Visitado</strong></span>
 		<label class="switch">
 		  <input type="checkbox">
 		  <span class="slider"></span>
@@ -663,7 +694,7 @@ people.forEach(person => {
 	  </div>
 
 	  <div class="visited-row">
-		<span>No se encuentra en el centro</span>
+		<span><strong>No se encuentra en el centro</strong></span>
 		<label class="switch">
 		  <input type="checkbox" class="toggle-presence">
 		  <span class="slider"></span>
