@@ -164,7 +164,9 @@ async function authenticateUser() {
         if (!storedCredentialId) {
             log("❌ No existe ningún dispositivo registrado");
             return;
-        }
+        }else{
+			alert(storedCredentialId);
+		}
 
         log("⏳ Solicitando autenticación biométrica...");
 
